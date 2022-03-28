@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .totalPage {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+      }
+      #memeImage {
+        width: 50vw;
+        height: 70vh;
+        border: 1px solid #646bd3;
+      }
+      #ipAdd {
+        font-size: 30px;
+      }
+      #memeButton {
+        background-color: #646bd3;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      @media only screen and (max-width: 600px) {
+        #memeImage {
+          width: 90vw;
+          height: 70vh;
+        }
+      }
+    </style>
+    <title>Anuj Dube|Assignment 3</title>
+  </head>
+  <body>
+    <div class="totalPage">
+      <div class="firstArea">
+        <p class="ipText">Your Public IP</p>
+        <p><span id="ipAdd"></span></p>
+        <button id="memeButton">Random Meme</button>
+      </div>
+      <img id="memeImage" />
+    </div>
+
+    <script type="application/javascript">
+      const ipAdd = document.getElementById('ipAdd');
+      const memeImage = document.getElementById('memeImage');
+      const memeButton = document.getElementById('memeButton');
+
+      memeButton.addEventListener('click', () => {
+        getMeme().then((data) => {
+          console.log(data);
+          memeImage.src = data.url;
+        });
+      });
+
+      async function getIp() {
+        const response = await fetch('https://api.ipify.org/?format=json');
+        const data = await response.json();
+        return data;
+      }
+
+      async function getMeme() {
+        const response = await fetch('https://meme-api.herokuapp.com/gimme');
+        const data = await response.json();
+        return data;
+      }
+      window.onload = function () {
+        getIp().then((data) => {
+          console.log(data);
+          ipAdd.innerText = data.ip;
+        });
+        getMeme().then((data) => {
+          console.log(data);
+          memeImage.src = data.url;
+        });
+      };
+    </script>
+  </body>
+</html>
